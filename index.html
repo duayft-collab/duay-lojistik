@@ -614,28 +614,283 @@
   .toast-title { font-size: 13px; font-weight: 700; margin-bottom: 3px; }
   .toast-msg { font-size: 12px; color: var(--text2); }
   @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+  /* ===== LOGIN SCREEN ===== */
+  #loginScreen {
+    position: fixed; inset: 0; z-index: 9999;
+    background: var(--navy);
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column;
+    transition: opacity .4s ease;
+  }
+  #loginScreen.hide { opacity: 0; pointer-events: none; }
+  .login-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 40px 44px;
+    width: 420px;
+    box-shadow: 0 24px 80px rgba(0,0,0,.5);
+    animation: loginIn .5s cubic-bezier(.22,1,.36,1);
+  }
+  @keyframes loginIn { from { opacity:0; transform:translateY(28px) scale(.97); } to { opacity:1; transform:none; } }
+  .login-logo {
+    text-align: center; margin-bottom: 28px;
+  }
+  .login-logo-icon { font-size: 44px; margin-bottom: 8px; }
+  .login-logo-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 28px; color: var(--accent); letter-spacing: -.5px;
+  }
+  .login-logo-sub { font-size: 12px; color: var(--text3); margin-top: 3px; }
+  .login-ver {
+    margin-top: 10px;
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--text3);
+    background: var(--navy2); border: 1px solid var(--border);
+    border-radius: 20px; padding: 4px 12px;
+  }
+  .login-ver b { color: var(--accent); }
+  .login-field { margin-bottom: 14px; }
+  .login-field label {
+    font-size: 10px; font-weight: 700; color: var(--text3);
+    text-transform: uppercase; letter-spacing: .8px;
+    display: block; margin-bottom: 6px;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+  .login-input {
+    width: 100%; padding: 11px 14px;
+    background: var(--navy2); border: 1px solid var(--border);
+    border-radius: 8px; color: var(--text);
+    font-size: 14px; font-family: 'Space Grotesk', sans-serif;
+    transition: border-color .2s, box-shadow .2s;
+    outline: none;
+  }
+  .login-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,212,255,.12); }
+  .login-btn {
+    width: 100%; padding: 12px;
+    background: var(--accent); color: var(--navy);
+    border: none; border-radius: 8px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px; font-weight: 700;
+    cursor: pointer; transition: all .2s;
+    margin-top: 4px;
+  }
+  .login-btn:hover { background: #00b8d9; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,212,255,.25); }
+  .login-btn:active { transform: none; }
+  .login-error {
+    color: var(--red); font-size: 12px; text-align: center;
+    margin-top: 10px; min-height: 18px;
+    background: rgba(239,68,68,.08); border-radius: 6px; padding: 6px 12px;
+    display: none;
+  }
+  .login-error.show { display: block; }
+  .login-lang-bar {
+    display: flex; justify-content: center; gap: 6px; margin-bottom: 20px;
+  }
+  .login-lang-btn {
+    padding: 5px 12px; border-radius: 20px; border: 1px solid var(--border);
+    background: transparent; color: var(--text3); cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 600;
+    transition: all .15s;
+  }
+  .login-lang-btn.active { background: var(--accent); color: var(--navy); border-color: var(--accent); }
+  .login-clock {
+    text-align: center; margin-top: 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--text3); line-height: 1.8;
+  }
+  .login-theme-toggle {
+    position: absolute; top: 20px; right: 20px;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 20px; padding: 6px 14px;
+    color: var(--text3); cursor: pointer;
+    font-size: 12px; font-family: 'Space Grotesk', sans-serif;
+    transition: all .15s;
+  }
+  .login-theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ===== USER MENU ===== */
+  .user-menu-wrap { position: relative; }
+  .user-chip {
+    display: flex; align-items: center; gap: 7px;
+    padding: 5px 12px; border-radius: 20px;
+    background: var(--navy2); border: 1px solid var(--border);
+    cursor: pointer; transition: all .15s; color: var(--text2);
+    font-size: 12px; font-weight: 600;
+  }
+  .user-chip:hover { border-color: var(--accent); color: var(--accent); }
+  .user-avatar {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--gold));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; color: var(--navy);
+    flex-shrink: 0;
+  }
+  .user-dropdown {
+    position: absolute; top: calc(100% + 8px); right: 0;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; min-width: 200px;
+    box-shadow: 0 12px 40px rgba(0,0,0,.4);
+    z-index: 500; display: none;
+    animation: fi2 .15s ease;
+  }
+  @keyframes fi2 { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:none; } }
+  .user-dropdown.open { display: block; }
+  .user-dd-head {
+    padding: 14px 16px; border-bottom: 1px solid var(--border);
+  }
+  .user-dd-name { font-weight: 700; font-size: 14px; color: var(--text); }
+  .user-dd-role { font-size: 11px; color: var(--accent); margin-top: 2px; }
+  .user-dd-item {
+    padding: 10px 16px; font-size: 13px; color: var(--text2);
+    cursor: pointer; display: flex; align-items: center; gap: 9px;
+    transition: background .12s;
+  }
+  .user-dd-item:hover { background: var(--navy3); color: var(--text); }
+  .user-dd-item.danger { color: var(--red); }
+  .user-dd-item.danger:hover { background: rgba(239,68,68,.08); }
+
+  /* ===== LANG SELECTOR in topbar ===== */
+  .lang-selector {
+    display: flex; align-items: center; gap: 3px;
+    background: var(--navy2); border: 1px solid var(--border);
+    border-radius: 20px; padding: 3px 5px;
+  }
+  .lang-btn {
+    padding: 3px 8px; border-radius: 14px;
+    border: none; background: transparent;
+    color: var(--text3); font-size: 11px; font-weight: 600;
+    cursor: pointer; transition: all .12s;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+  .lang-btn.active { background: var(--accent); color: var(--navy); }
+
+  /* ===== UPDATE SUGGESTIONS ===== */
+  .suggest-card {
+    background: var(--navy2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px 16px; margin-bottom: 10px;
+    transition: border-color .15s;
+  }
+  .suggest-card:hover { border-color: var(--accent); }
+  .suggest-vote {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--navy3); border: 1px solid var(--border);
+    border-radius: 20px; padding: 4px 10px; cursor: pointer;
+    font-size: 12px; font-weight: 700; color: var(--text2);
+    transition: all .15s; border: none;
+  }
+  .suggest-vote:hover { background: rgba(0,212,255,.12); color: var(--accent); }
+  .suggest-vote.voted { background: rgba(0,212,255,.15); color: var(--accent); border: 1px solid rgba(0,212,255,.3); }
+  .suggest-status {
+    font-size: 10px; font-weight: 800; letter-spacing: .8px;
+    text-transform: uppercase; padding: 2px 8px; border-radius: 4px;
+  }
+  .ss-open { background: rgba(0,212,255,.12); color: var(--accent); }
+  .ss-planned { background: rgba(245,158,11,.12); color: var(--gold); }
+  .ss-done { background: rgba(16,185,129,.12); color: var(--green); }
+  .ss-rejected { background: rgba(239,68,68,.1); color: var(--red); }
+
+  /* ===== VERSION CHANGELOG ===== */
+  .changelog-item {
+    display: flex; gap: 14px; padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .changelog-item:last-child { border: none; }
+  .cl-ver {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; font-weight: 700; color: var(--accent);
+    min-width: 52px; padding-top: 2px;
+  }
+  .cl-ts { font-size: 10px; color: var(--text3); margin-top: 3px; font-family: 'JetBrains Mono', monospace; }
+  .cl-items { list-style: none; padding: 0; }
+  .cl-items li { font-size: 12px; color: var(--text2); padding: 2px 0; line-height: 1.6; }
+  .cl-items li::before { content: '→ '; color: var(--accent); font-weight: 700; }
 </style>
 </head>
 <body>
 
-<!-- TOPBAR -->
+<!-- ===== LOGIN SCREEN ===== -->
+<div id="loginScreen">
+  <button class="login-theme-toggle" onclick="loginToggleTheme()" id="loginThemeBtn">🌙 Gece Modu</button>
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="login-logo-icon">⚓</div>
+      <div class="login-logo-title">FreightPro</div>
+      <div class="login-logo-sub" id="loginSubtitle">Konteyner & Navlun Yönetim Sistemi</div>
+      <div class="login-ver">
+        <b id="loginVer">v3.0</b>
+        <span id="loginBuildTs" style="color:var(--text3)">· 2026-03-16 14:30:00</span>
+      </div>
+    </div>
+
+    <!-- Language selector -->
+    <div class="login-lang-bar">
+      <button class="login-lang-btn active" onclick="setLoginLang('tr',this)">🇹🇷 TR</button>
+      <button class="login-lang-btn" onclick="setLoginLang('en',this)">🇬🇧 EN</button>
+      <button class="login-lang-btn" onclick="setLoginLang('fr',this)">🇫🇷 FR</button>
+    </div>
+
+    <div class="login-field">
+      <label id="loginUserLabel">KULLANICI ADI</label>
+      <input class="login-input" id="loginUser" type="text" placeholder="admin" autocomplete="username" onkeydown="if(event.key==='Enter')document.getElementById('loginPass').focus()">
+    </div>
+    <div class="login-field">
+      <label id="loginPassLabel">ŞİFRE</label>
+      <div style="position:relative">
+        <input class="login-input" id="loginPass" type="password" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()" style="padding-right:42px">
+        <button onclick="togglePassVis()" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text3);cursor:pointer;font-size:16px" id="passVisBtn">👁</button>
+      </div>
+    </div>
+
+    <button class="login-btn" onclick="doLogin()" id="loginBtn">GİRİŞ YAP</button>
+    <div class="login-error" id="loginError">Hatalı kullanıcı adı veya şifre</div>
+
+    <div class="login-clock" id="loginClock"></div>
+  </div>
+</div>
+
+<!-- ===== APP (hidden until login) ===== -->
+<div id="appRoot" style="display:none">
 <div class="topbar">
   <div class="logo">
     ⚓ FreightPro
     <span>| Konteyner & Navlun Yönetim Sistemi</span>
-    <span style="font-size:10px;background:rgba(0,212,255,0.12);color:var(--accent);border:1px solid rgba(0,212,255,0.25);border-radius:4px;padding:2px 7px;margin-left:4px;letter-spacing:.3px">v2.0</span>
+    <span style="font-size:10px;background:rgba(0,212,255,0.12);color:var(--accent);border:1px solid rgba(0,212,255,0.25);border-radius:4px;padding:2px 7px;margin-left:4px;letter-spacing:.3px" id="versionBadge">v3.0</span>
   </div>
   <div class="topbar-right">
-    <a href="https://github.com/freightpro/freightpro" target="_blank" rel="noopener noreferrer" title="GitHub'da görüntüle" style="display:flex;align-items:center;gap:5px;color:var(--text3);text-decoration:none;font-size:12px;padding:4px 8px;border-radius:6px;border:1px solid var(--border);transition:all 0.2s" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text3)'">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-      GitHub
-    </a>
+    <!-- Language Selector -->
+    <div class="lang-selector">
+      <button class="lang-btn active" id="appLangTR" onclick="setAppLang('tr')">🇹🇷 TR</button>
+      <button class="lang-btn" id="appLangEN" onclick="setAppLang('en')">🇬🇧 EN</button>
+      <button class="lang-btn" id="appLangFR" onclick="setAppLang('fr')">🇫🇷 FR</button>
+    </div>
     <div id="alertBadge" class="badge-alert" style="display:none">0 Alarm</div>
     <button class="btn btn-ghost btn-sm" id="themeToggle" onclick="toggleTheme()" title="Gece/Gündüz Modu">🌙 Gece</button>
-    <button class="btn btn-ghost btn-sm" onclick="exportDB()" title="Veriyi .db dosyası olarak indir">💾 Yedekle</button>
-    <button class="btn btn-ghost btn-sm" onclick="document.getElementById('importFileInput').click()" title="Daha önce yedeklenen .db dosyasını geri yükle">📂 Geri Yükle</button>
+    <button class="btn btn-ghost btn-sm" onclick="exportDB()" title="Veriyi .db dosyası olarak indir">💾</button>
+    <button class="btn btn-ghost btn-sm" onclick="document.getElementById('importFileInput').click()" title="Yedek geri yükle">📂</button>
     <input type="file" id="importFileInput" accept=".db" style="display:none" onchange="importDB(this)">
-    <button class="btn btn-primary btn-sm" onclick="openModal('shipmentModal')">+ Konteynır Ekle</button>
+    <button class="btn btn-primary btn-sm" onclick="openModal('shipmentModal')" id="topbarAddBtn">+ Konteynır Ekle</button>
+    <!-- User Menu -->
+    <div class="user-menu-wrap" id="userMenuWrap">
+      <div class="user-chip" onclick="toggleUserMenu()">
+        <div class="user-avatar" id="userAvatar">A</div>
+        <span id="userChipName">admin</span>
+        <span style="font-size:9px;color:var(--text3)">▾</span>
+      </div>
+      <div class="user-dropdown" id="userDropdown">
+        <div class="user-dd-head">
+          <div class="user-dd-name" id="ddUserName">Admin</div>
+          <div class="user-dd-role" id="ddUserRole">Süper Admin</div>
+        </div>
+        <div class="user-dd-item" onclick="showPage('settings');closeUserMenu()">⚙️ <span id="ddSettings">Ayarlar</span></div>
+        <div class="user-dd-item" onclick="showPage('suggestions');closeUserMenu()">💡 <span id="ddSuggest">Geliştirme Önerileri</span></div>
+        <div class="user-dd-item" onclick="showPage('changelog');closeUserMenu()">📋 <span id="ddChangelog">Sürüm Notları</span></div>
+        <div class="user-dd-item" onclick="exportDB();closeUserMenu()">💾 <span id="ddBackup">Yedekle</span></div>
+        <div class="user-dd-item danger" onclick="doLogout()">🚪 <span id="ddLogout">Çıkış Yap</span></div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -664,8 +919,10 @@
       <div class="nav-item" onclick="showPage('messages')"><span class="nav-icon">✉️</span> Müşteri Mesajları</div>
     </div>
     <div class="nav-section">
-      <div class="nav-label">Sistem</div>
-      <div class="nav-item" onclick="showPage('settings')"><span class="nav-icon">⚙️</span> Ayarlar</div>
+      <div class="nav-label" id="sidebarSistemLabel">Sistem</div>
+      <div class="nav-item" onclick="showPage('settings')"><span class="nav-icon">⚙️</span> <span id="navSettings">Ayarlar</span></div>
+      <div class="nav-item" onclick="showPage('suggestions')"><span class="nav-icon">💡</span> <span id="navSuggest">Geliştirme Önerileri</span></div>
+      <div class="nav-item" onclick="showPage('changelog')"><span class="nav-icon">📋</span> <span id="navChangelog">Sürüm Notları</span></div>
     </div>
     <!-- Sidebar Footer -->
     <div style="padding:16px 20px;border-top:1px solid var(--border);margin-top:auto">
@@ -1570,23 +1827,154 @@
         </div>
 
         <div style="background:var(--navy2);border-radius:8px;padding:16px;border:1px solid var(--border)">
-          <div style="font-size:12px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px">📝 Sürüm Notları</div>
-          <div style="font-size:12px;color:var(--text2);line-height:1.8">
-            <div style="margin-bottom:8px"><span style="background:rgba(0,212,255,0.12);color:var(--accent);padding:2px 7px;border-radius:4px;font-weight:700;font-size:11px;font-family:'JetBrains Mono',monospace">v2.0</span>
-              <span style="margin-left:10px;color:var(--text3)">— Mart 2026</span>
+          <div style="font-size:12px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px">📝 Güncel Sürüm</div>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+            <span id="aboutVerBadge" style="background:rgba(0,212,255,0.12);color:var(--accent);padding:4px 12px;border-radius:6px;font-weight:700;font-size:14px;font-family:'JetBrains Mono',monospace">v3.0</span>
+            <span id="aboutBuildTs" style="font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace">2026-03-16 14:30:00</span>
+          </div>
+          <button class="btn btn-ghost btn-sm" onclick="showPage('changelog')" style="font-size:12px">📋 Tüm Sürüm Notlarını Gör →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- USER MANAGEMENT (admin only) -->
+    <div class="card" style="margin-top:20px" id="userMgmtCard">
+      <div class="card-title">👥 Kullanıcı Yönetimi
+        <span style="font-size:11px;font-weight:400;color:var(--text3);margin-left:8px">Sadece Süper Admin görebilir</span>
+      </div>
+      <div id="userListTable" style="margin-bottom:16px"></div>
+      <div id="newUserForm" style="display:none">
+        <div class="divider"></div>
+        <div style="font-size:12px;font-weight:700;color:var(--text2);margin-bottom:12px">+ Yeni Kullanıcı Ekle</div>
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label>Kullanıcı Adı *</label>
+            <input id="nuUsername" type="text" placeholder="kullanici_adi">
+          </div>
+          <div class="form-group">
+            <label>Ad Soyad *</label>
+            <input id="nuName" type="text" placeholder="Ad Soyad">
+          </div>
+          <div class="form-group">
+            <label>Şifre *</label>
+            <input id="nuPassword" type="password" placeholder="Şifre">
+          </div>
+          <div class="form-group">
+            <label>Rol</label>
+            <select id="nuRole">
+              <option value="Süper Admin">Süper Admin</option>
+              <option value="Operatör" selected>Operatör</option>
+              <option value="Görüntüleyici">Görüntüleyici</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Dil Tercihi</label>
+            <select id="nuLang">
+              <option value="tr">🇹🇷 Türkçe</option>
+              <option value="en">🇬🇧 English</option>
+              <option value="fr">🇫🇷 Français</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-primary btn-sm" onclick="addNewUser()">💾 Kullanıcı Ekle</button>
+          <button class="btn btn-ghost btn-sm" onclick="document.getElementById('newUserForm').style.display='none'">İptal</button>
+        </div>
+      </div>
+      <div class="form-actions" style="margin-top:8px">
+        <button class="btn btn-primary btn-sm" onclick="document.getElementById('newUserForm').style.display=document.getElementById('newUserForm').style.display==='none'?'block':'none'">+ Yeni Kullanıcı</button>
+      </div>
+    </div>
+    </div>
+
+    <!-- SUGGESTIONS PAGE -->
+    <div class="page" id="page-suggestions">
+      <div class="page-header">
+        <div>
+          <div class="page-title" id="suggestTitle">💡 Geliştirme Önerileri</div>
+          <div class="page-subtitle" id="suggestSub">Yeni özellik, iyileştirme veya hata bildirin</div>
+        </div>
+        <button class="btn btn-primary" onclick="openSuggestForm()" id="suggestNewBtn">+ Yeni Öneri</button>
+      </div>
+
+      <!-- New suggestion form -->
+      <div id="suggestForm" style="display:none;margin-bottom:20px">
+        <div class="card">
+          <div class="card-title" id="suggestFormTitle">📝 Yeni Öneri Ekle</div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label id="suggestCatLabel">KATEGORİ</label>
+              <select id="suggestCat">
+                <option value="feature">🆕 Yeni Özellik</option>
+                <option value="improvement">⚡ İyileştirme</option>
+                <option value="bug">🐛 Hata Bildirimi</option>
+                <option value="ui">🎨 Arayüz</option>
+                <option value="other">💬 Diğer</option>
+              </select>
             </div>
-            <ul style="padding-left:16px">
-              <li>Aranabilir armatör combobox (19 armatör, alliance grupları)</li>
-              <li>Liman autocomplete (50+ liman, LOCODE + bayrak)</li>
-              <li>Veri geri yükleme (.db import)</li>
-              <li>RFQ — TR/EN/FR çok dil PDF desteği</li>
-              <li>Sabit şartlar yönetimi (RFQ PDF + alış fiyatı zorunlu onay)</li>
-              <li>Canlı konteyner takip paneli (armatör link entegrasyonu)</li>
-              <li>Hata düzeltmeleri ve UI iyileştirmeleri</li>
-            </ul>
+            <div class="form-group">
+              <label id="suggestPriLabel">ÖNCELİK</label>
+              <select id="suggestPri">
+                <option value="low">Düşük</option>
+                <option value="medium" selected>Orta</option>
+                <option value="high">Yüksek</option>
+                <option value="critical">Kritik</option>
+              </select>
+            </div>
+            <div class="form-group full">
+              <label id="suggestTitleLabel">BAŞLIK *</label>
+              <input id="suggestTitleInput" type="text" placeholder="Önerinin kısa başlığı...">
+            </div>
+            <div class="form-group full">
+              <label id="suggestDescLabel">AÇIKLAMA</label>
+              <textarea id="suggestDesc" rows="3" placeholder="Detayları, beklenen davranış, ekran görüntüsü linki..."></textarea>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-primary" onclick="saveSuggestion()" id="suggestSaveBtn">💾 Gönder</button>
+            <button class="btn btn-ghost" onclick="document.getElementById('suggestForm').style.display='none'">İptal</button>
           </div>
         </div>
       </div>
+
+      <!-- Filter bar -->
+      <div class="filter-bar">
+        <select id="suggestFilterCat" onchange="renderSuggestions()">
+          <option value="">Tüm Kategoriler</option>
+          <option value="feature">🆕 Yeni Özellik</option>
+          <option value="improvement">⚡ İyileştirme</option>
+          <option value="bug">🐛 Hata</option>
+          <option value="ui">🎨 Arayüz</option>
+          <option value="other">💬 Diğer</option>
+        </select>
+        <select id="suggestFilterStatus" onchange="renderSuggestions()">
+          <option value="">Tüm Durumlar</option>
+          <option value="open">Açık</option>
+          <option value="planned">Planlandı</option>
+          <option value="done">Tamamlandı</option>
+          <option value="rejected">Reddedildi</option>
+        </select>
+        <select id="suggestFilterSort" onchange="renderSuggestions()">
+          <option value="votes">En Çok Oy</option>
+          <option value="newest">En Yeni</option>
+          <option value="oldest">En Eski</option>
+        </select>
+      </div>
+      <div id="suggestionsContent"></div>
+    </div>
+
+    <!-- CHANGELOG PAGE -->
+    <div class="page" id="page-changelog">
+      <div class="page-header">
+        <div>
+          <div class="page-title" id="changelogTitle">📋 Sürüm Notları</div>
+          <div class="page-subtitle" id="changelogSub">Tüm güncelleme geçmişi ve değişiklikler</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.2);border-radius:6px;padding:4px 12px" id="currentVerBadge">v3.0</span>
+        </div>
+      </div>
+      <div id="changelogContent"></div>
     </div>
 
   </div><!-- /main -->
@@ -1793,6 +2181,8 @@
 
 <!-- TOAST -->
 <div class="toast-container" id="toastContainer"></div>
+
+</div><!-- /appRoot -->
 
 <script>
 // ===================== DATABASE =====================
@@ -2342,10 +2732,13 @@ function viewShipment(id) {
 }
 
 // Shipment modal reset
-document.getElementById('shipmentModal').querySelector('.modal-close').addEventListener('click', () => {
-  document.getElementById('editShipId').value='';
-  document.getElementById('shipmentModalTitle').textContent='Yeni Konteynır Ekle';
-});
+(function() {
+  const sm = document.getElementById('shipmentModal');
+  if (sm) sm.querySelector('.modal-close')?.addEventListener('click', () => {
+    document.getElementById('editShipId').value='';
+    document.getElementById('shipmentModalTitle').textContent='Yeni Konteynır Ekle';
+  });
+})();
 
 // ===================== ALERTS =====================
 function renderAlerts() {
@@ -3003,6 +3396,16 @@ function renderSettingsPage() {
   document.getElementById('setDelayDays').value = getSetting('delayDays')||'3';
   document.getElementById('setArrivalWarn').value = getSetting('arrivalWarn')||'7';
   loadMandatoryFieldsUI();
+  // Update about section version
+  const avb = document.getElementById('aboutVerBadge');
+  const abt = document.getElementById('aboutBuildTs');
+  if (avb) avb.textContent = BUILD_VERSION;
+  if (abt) abt.textContent = BUILD_TIMESTAMP;
+  // Render user management
+  renderUserTable();
+  // Show/hide user mgmt based on role
+  const umc = document.getElementById('userMgmtCard');
+  if (umc) umc.style.display = currentUser?.role === 'Süper Admin' ? 'block' : 'none';
 }
 
 function saveSettings_form() {
@@ -3052,24 +3455,30 @@ async function init() {
 }
 
 // Reset modal on open button click
-document.querySelector('.topbar-right .btn-primary').addEventListener('click', () => {
-  document.getElementById('editShipId').value='';
-  document.getElementById('shipmentModalTitle').textContent='Yeni Konteynır Ekle';
-  ['sContNo','sMüşteri','sPOL','sPOD','sETD','sATD','sETA','sATA','sArmator','sForwarder','sBL','sNavlun','sKargo','sNot'].forEach(id=>{
-    const el=document.getElementById(id);if(el)el.value='';
+document.addEventListener('DOMContentLoaded', () => {
+  const primBtn = document.querySelector('.topbar-right .btn-primary');
+  if (primBtn) primBtn.addEventListener('click', () => {
+    document.getElementById('editShipId').value='';
+    document.getElementById('shipmentModalTitle').textContent='Yeni Konteynır Ekle';
+    ['sContNo','sMüşteri','sPOL','sPOD','sETD','sATD','sETA','sATA','sArmator','sForwarder','sBL','sNavlun','sKargo','sNot'].forEach(id=>{
+      const el=document.getElementById(id);if(el)el.value='';
+    });
+    const tipEl=document.getElementById('sTip');if(tipEl)tipEl.value='20DC';
+    const adetEl=document.getElementById('sAdet');if(adetEl)adetEl.value=1;
+    const durumEl=document.getElementById('sDurum');if(durumEl)durumEl.value='Yükleme Bekleniyor';
   });
-  document.getElementById('sTip').value='20DC';
-  document.getElementById('sAdet').value=1;
-  document.getElementById('sDurum').value='Yükleme Bekleniyor';
 });
 
 // Rate modal reset on close
-document.getElementById('rateModal').querySelector('.modal-close').addEventListener('click', () => {
-  document.getElementById('editRateId').value='';
-  ['rDate','rArmator','rForwarder','rPOL','rPOD','rFiyat','rTT','rGecerli','rNot'].forEach(id=>{
-    const el=document.getElementById(id);if(el)el.value='';
+(function() {
+  const rm = document.getElementById('rateModal');
+  if (rm) rm.querySelector('.modal-close')?.addEventListener('click', () => {
+    document.getElementById('editRateId').value='';
+    ['rDate','rArmator','rForwarder','rPOL','rPOD','rFiyat','rTT','rGecerli','rNot'].forEach(id=>{
+      const el=document.getElementById(id);if(el)el.value='';
+    });
   });
-});
+})();
 
 // ===================== THEME TOGGLE =====================
 let isDark = true;
@@ -4161,7 +4570,630 @@ function saveRate() {
   _origSaveRate();
 }
 
-// ===================== KEYBOARD SHORTCUTS HELP =====================
+// ===================== BUILD INFO =====================
+const BUILD_VERSION = 'v3.0';
+const BUILD_TIMESTAMP = '2026-03-16 14:30:00';
+
+// ===================== USERS & AUTH =====================
+const DEFAULT_USERS = [
+  { username: 'admin',   password: 'admin123',  name: 'Admin',         role: 'Süper Admin', lang: 'tr' },
+  { username: 'user1',   password: 'user123',   name: 'Kullanıcı 1',   role: 'Operatör',    lang: 'tr' },
+  { username: 'viewer',  password: 'view123',   name: 'Viewer',        role: 'Görüntüleyici', lang: 'en' },
+];
+
+function getUsers() {
+  try { return JSON.parse(localStorage.getItem('fpUsers') || 'null') || DEFAULT_USERS; }
+  catch { return DEFAULT_USERS; }
+}
+function saveUsers(users) { localStorage.setItem('fpUsers', JSON.stringify(users)); }
+
+function renderUserTable() {
+  const el = document.getElementById('userListTable');
+  if (!el) return;
+  const users = getUsers();
+  const roleColor = {'Süper Admin':'var(--accent)','Operatör':'var(--gold)','Görüntüleyici':'var(--text3)'};
+  const langFlag = { tr:'🇹🇷', en:'🇬🇧', fr:'🇫🇷' };
+  el.innerHTML = `<table><thead><tr>
+    <th>Kullanıcı Adı</th><th>Ad Soyad</th><th>Rol</th><th>Dil</th><th>İşlemler</th>
+  </tr></thead><tbody>
+  ${users.map((u,i) => `<tr>
+    <td class="mono" style="color:var(--accent)">${u.username}</td>
+    <td style="font-weight:600">${u.name}</td>
+    <td><span style="font-size:11px;font-weight:700;color:${roleColor[u.role]||'var(--text3)'}">${u.role}</span></td>
+    <td>${langFlag[u.lang]||'🌐'} ${u.lang?.toUpperCase()||'TR'}</td>
+    <td>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-ghost btn-sm" onclick="promptChangePassword(${i})" title="Şifre değiştir">🔑</button>
+        ${u.username !== 'admin' ? `<button class="btn btn-danger btn-sm" onclick="deleteUser(${i})" title="Kullanıcı sil">🗑</button>` : '<span style="font-size:10px;color:var(--text3);padding:4px 6px">Silinemez</span>'}
+      </div>
+    </td>
+  </tr>`).join('')}
+  </tbody></table>`;
+}
+
+function addNewUser() {
+  const username = document.getElementById('nuUsername').value.trim();
+  const name = document.getElementById('nuName').value.trim();
+  const password = document.getElementById('nuPassword').value;
+  const role = document.getElementById('nuRole').value;
+  const lang = document.getElementById('nuLang').value;
+  if (!username || !name || !password) { toast('Hata','Tüm zorunlu alanları doldurun','danger'); return; }
+  const users = getUsers();
+  if (users.find(u => u.username === username)) { toast('Hata','Bu kullanıcı adı zaten mevcut','danger'); return; }
+  users.push({ username, password, name, role, lang });
+  saveUsers(users);
+  document.getElementById('nuUsername').value = '';
+  document.getElementById('nuName').value = '';
+  document.getElementById('nuPassword').value = '';
+  document.getElementById('newUserForm').style.display = 'none';
+  renderUserTable();
+  toast('Eklendi', `${name} kullanıcısı oluşturuldu ✓`, 'success');
+}
+
+function deleteUser(idx) {
+  const users = getUsers();
+  if (!confirm(`"${users[idx]?.name}" kullanıcısını silmek istiyor musunuz?`)) return;
+  users.splice(idx, 1);
+  saveUsers(users);
+  renderUserTable();
+  toast('Silindi', 'Kullanıcı silindi', 'warn');
+}
+
+function promptChangePassword(idx) {
+  const users = getUsers();
+  const u = users[idx];
+  const newPass = prompt(`"${u.name}" için yeni şifre girin:`);
+  if (!newPass || newPass.trim().length < 4) { if (newPass !== null) toast('Hata','Şifre en az 4 karakter olmalı','danger'); return; }
+  users[idx].password = newPass.trim();
+  saveUsers(users);
+  toast('Güncellendi', `${u.name} şifresi güncellendi ✓`, 'success');
+}
+
+let currentUser = null;
+
+function doLogin() {
+  const username = document.getElementById('loginUser').value.trim();
+  const password = document.getElementById('loginPass').value;
+  const errEl = document.getElementById('loginError');
+  const btn = document.getElementById('loginBtn');
+  errEl.classList.remove('show');
+  if (!username || !password) {
+    errEl.textContent = UI_STRINGS[loginLang].loginEmpty;
+    errEl.classList.add('show'); return;
+  }
+  const users = getUsers();
+  const user = users.find(u => u.username === username && u.password === password);
+  if (!user) {
+    errEl.textContent = UI_STRINGS[loginLang].loginError;
+    errEl.classList.add('show');
+    document.getElementById('loginPass').value = '';
+    document.getElementById('loginPass').focus();
+    return;
+  }
+  currentUser = user;
+  // Apply user's preferred lang
+  currentLang = user.lang || 'tr';
+  // Hide login, show app
+  const ls = document.getElementById('loginScreen');
+  ls.classList.add('hide');
+  setTimeout(() => { ls.style.display = 'none'; }, 400);
+  document.getElementById('appRoot').style.display = 'block';
+  // Update user display
+  updateUserDisplay();
+  applyLanguage();
+  // Init app
+  init();
+  loadTheme();
+  toast('Hoş Geldiniz', `${user.name} olarak giriş yapıldı ✓`, 'success');
+}
+
+function doLogout() {
+  if (!confirm(UI_STRINGS[currentLang].logoutConfirm || 'Çıkış yapmak istediğinizden emin misiniz?')) return;
+  currentUser = null;
+  document.getElementById('appRoot').style.display = 'none';
+  const ls = document.getElementById('loginScreen');
+  ls.style.display = 'flex';
+  ls.classList.remove('hide');
+  document.getElementById('loginUser').value = '';
+  document.getElementById('loginPass').value = '';
+  document.getElementById('loginError').classList.remove('show');
+  closeUserMenu();
+}
+
+function updateUserDisplay() {
+  if (!currentUser) return;
+  const initials = currentUser.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
+  const av = document.getElementById('userAvatar');
+  const cn = document.getElementById('userChipName');
+  const dn = document.getElementById('ddUserName');
+  const dr = document.getElementById('ddUserRole');
+  if (av) av.textContent = initials;
+  if (cn) cn.textContent = currentUser.name;
+  if (dn) dn.textContent = currentUser.name;
+  if (dr) dr.textContent = currentUser.role;
+}
+
+function toggleUserMenu() {
+  const dd = document.getElementById('userDropdown');
+  if (dd) dd.classList.toggle('open');
+}
+function closeUserMenu() {
+  const dd = document.getElementById('userDropdown');
+  if (dd) dd.classList.remove('open');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('#userMenuWrap')) closeUserMenu();
+});
+
+function togglePassVis() {
+  const inp = document.getElementById('loginPass');
+  const btn = document.getElementById('passVisBtn');
+  if (inp.type === 'password') { inp.type = 'text'; btn.textContent = '🙈'; }
+  else { inp.type = 'password'; btn.textContent = '👁'; }
+}
+
+// ===================== LOGIN CLOCK =====================
+let loginLang = 'tr';
+let loginClockInterval = null;
+
+function startLoginClock() {
+  const el = document.getElementById('loginClock');
+  if (!el) return;
+  const tick = () => {
+    const now = new Date();
+    const pad = n => String(n).padStart(2,'0');
+    const dateStr = now.toLocaleDateString(loginLang === 'tr' ? 'tr-TR' : loginLang === 'fr' ? 'fr-FR' : 'en-GB', {
+      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+    });
+    const timeStr = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+    el.innerHTML = `${dateStr}<br><span style="font-size:16px;font-weight:700;color:var(--accent);letter-spacing:2px">${timeStr}</span>`;
+  };
+  tick();
+  if (loginClockInterval) clearInterval(loginClockInterval);
+  loginClockInterval = setInterval(tick, 1000);
+}
+
+// ===================== UI STRINGS (TR/EN/FR) =====================
+const UI_STRINGS = {
+  tr: {
+    loginTitle: 'Konteyner & Navlun Yönetim Sistemi',
+    loginUserLabel: 'KULLANICI ADI',
+    loginPassLabel: 'ŞİFRE',
+    loginBtn: 'GİRİŞ YAP',
+    loginError: 'Hatalı kullanıcı adı veya şifre',
+    loginEmpty: 'Kullanıcı adı ve şifre zorunludur',
+    logoutConfirm: 'Çıkış yapmak istediğinizden emin misiniz?',
+    addShipment: '+ Konteynır Ekle',
+    navDashboard: 'Dashboard',
+    navShipments: 'Konteynırlar',
+    navAlerts: 'Alarmlar',
+    navRates: 'Navlun Borsası',
+    navPricelist: 'Alış Fiyatları',
+    navRfq: 'Fiyat Talebi (RFQ)',
+    navQuotes: 'Teklifler',
+    navNewquote: 'Yeni Teklif',
+    navFraud: 'Hile Uyarıları',
+    navDecision: 'Karar Destek',
+    navMessages: 'Müşteri Mesajları',
+    navSettings: 'Ayarlar',
+    navSuggest: 'Geliştirme Önerileri',
+    navChangelog: 'Sürüm Notları',
+    ddSettings: 'Ayarlar',
+    ddSuggest: 'Geliştirme Önerileri',
+    ddChangelog: 'Sürüm Notları',
+    ddBackup: 'Yedekle',
+    ddLogout: 'Çıkış Yap',
+    suggestTitle: '💡 Geliştirme Önerileri',
+    suggestSub: 'Yeni özellik, iyileştirme veya hata bildirin',
+    suggestNewBtn: '+ Yeni Öneri',
+    changelogTitle: '📋 Sürüm Notları',
+    changelogSub: 'Tüm güncelleme geçmişi ve değişiklikler',
+    sidebarSistem: 'Sistem',
+  },
+  en: {
+    loginTitle: 'Container & Freight Management System',
+    loginUserLabel: 'USERNAME',
+    loginPassLabel: 'PASSWORD',
+    loginBtn: 'LOG IN',
+    loginError: 'Invalid username or password',
+    loginEmpty: 'Username and password are required',
+    logoutConfirm: 'Are you sure you want to log out?',
+    addShipment: '+ Add Container',
+    navDashboard: 'Dashboard',
+    navShipments: 'Containers',
+    navAlerts: 'Alerts',
+    navRates: 'Freight Market',
+    navPricelist: 'Purchase Rates',
+    navRfq: 'Rate Request (RFQ)',
+    navQuotes: 'Quotations',
+    navNewquote: 'New Quote',
+    navFraud: 'Fraud Alerts',
+    navDecision: 'Decision Support',
+    navMessages: 'Customer Messages',
+    navSettings: 'Settings',
+    navSuggest: 'Feature Requests',
+    navChangelog: 'Release Notes',
+    ddSettings: 'Settings',
+    ddSuggest: 'Feature Requests',
+    ddChangelog: 'Release Notes',
+    ddBackup: 'Backup',
+    ddLogout: 'Log Out',
+    suggestTitle: '💡 Feature Requests',
+    suggestSub: 'Submit new features, improvements or bug reports',
+    suggestNewBtn: '+ New Request',
+    changelogTitle: '📋 Release Notes',
+    changelogSub: 'Full update history and changes',
+    sidebarSistem: 'System',
+  },
+  fr: {
+    loginTitle: 'Système de Gestion des Conteneurs & Frets',
+    loginUserLabel: 'NOM D\'UTILISATEUR',
+    loginPassLabel: 'MOT DE PASSE',
+    loginBtn: 'SE CONNECTER',
+    loginError: 'Nom d\'utilisateur ou mot de passe incorrect',
+    loginEmpty: 'Le nom d\'utilisateur et le mot de passe sont obligatoires',
+    logoutConfirm: 'Êtes-vous sûr de vouloir vous déconnecter?',
+    addShipment: '+ Ajouter Conteneur',
+    navDashboard: 'Tableau de Bord',
+    navShipments: 'Conteneurs',
+    navAlerts: 'Alertes',
+    navRates: 'Marché des Frets',
+    navPricelist: 'Tarifs d\'Achat',
+    navRfq: 'Demande de Cotation',
+    navQuotes: 'Devis',
+    navNewquote: 'Nouveau Devis',
+    navFraud: 'Alertes Fraude',
+    navDecision: 'Aide à la Décision',
+    navMessages: 'Messages Clients',
+    navSettings: 'Paramètres',
+    navSuggest: 'Demandes d\'Amélioration',
+    navChangelog: 'Notes de Version',
+    ddSettings: 'Paramètres',
+    ddSuggest: 'Améliorations',
+    ddChangelog: 'Notes de Version',
+    ddBackup: 'Sauvegarder',
+    ddLogout: 'Se Déconnecter',
+    suggestTitle: '💡 Demandes d\'Amélioration',
+    suggestSub: 'Soumettez de nouvelles fonctionnalités, améliorations ou rapports de bugs',
+    suggestNewBtn: '+ Nouvelle Demande',
+    changelogTitle: '📋 Notes de Version',
+    changelogSub: 'Historique complet des mises à jour',
+    sidebarSistem: 'Système',
+  }
+};
+
+let currentLang = 'tr';
+
+function setLoginLang(lang, btn) {
+  loginLang = lang;
+  document.querySelectorAll('.login-lang-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  const s = UI_STRINGS[lang];
+  if (!s) return;
+  const sub = document.getElementById('loginSubtitle');
+  const ul = document.getElementById('loginUserLabel');
+  const pl = document.getElementById('loginPassLabel');
+  const lb = document.getElementById('loginBtn');
+  if (sub) sub.textContent = s.loginTitle;
+  if (ul) ul.textContent = s.loginUserLabel;
+  if (pl) pl.textContent = s.loginPassLabel;
+  if (lb) lb.textContent = s.loginBtn;
+  const err = document.getElementById('loginError');
+  if (err) err.textContent = s.loginError;
+  startLoginClock();
+}
+
+function setAppLang(lang) {
+  currentLang = lang;
+  // Update topbar lang buttons
+  ['TR','EN','FR'].forEach(l => {
+    const b = document.getElementById('appLang'+l);
+    if (b) b.classList.toggle('active', l.toLowerCase() === lang);
+  });
+  applyLanguage();
+  toast('', lang.toUpperCase() + ' dili seçildi', 'success');
+}
+
+function applyLanguage() {
+  const s = UI_STRINGS[currentLang];
+  if (!s) return;
+  // Topbar
+  const addBtn = document.getElementById('topbarAddBtn');
+  if (addBtn) addBtn.textContent = s.addShipment;
+  // User dropdown
+  const ids = {
+    ddSettings: 'ddSettings', ddSuggest: 'ddSuggest',
+    ddChangelog: 'ddChangelog', ddBackup: 'ddBackup', ddLogout: 'ddLogout'
+  };
+  Object.entries(ids).forEach(([key, elId]) => {
+    const el = document.getElementById(elId);
+    if (el) el.textContent = s[key] || '';
+  });
+  // Nav items
+  const navMap = {
+    navSettings: 'navSettings', navSuggest: 'navSuggest', navChangelog: 'navChangelog'
+  };
+  Object.entries(navMap).forEach(([key, elId]) => {
+    const el = document.getElementById(elId);
+    if (el) el.textContent = s[key] || '';
+  });
+  // Sidebar label
+  const ssl = document.getElementById('sidebarSistemLabel');
+  if (ssl) ssl.textContent = s.sidebarSistem || 'Sistem';
+  // Suggestion page
+  const st = document.getElementById('suggestTitle');
+  const ss = document.getElementById('suggestSub');
+  const snb = document.getElementById('suggestNewBtn');
+  if (st) st.textContent = s.suggestTitle || '';
+  if (ss) ss.textContent = s.suggestSub || '';
+  if (snb) snb.textContent = s.suggestNewBtn || '';
+  // Changelog page
+  const ct = document.getElementById('changelogTitle');
+  const cs = document.getElementById('changelogSub');
+  if (ct) ct.textContent = s.changelogTitle || '';
+  if (cs) cs.textContent = s.changelogSub || '';
+}
+
+function loginToggleTheme() {
+  isDark = !isDark;
+  document.body.classList.toggle('light-mode', !isDark);
+  const btn = document.getElementById('loginThemeBtn');
+  if (btn) btn.textContent = isDark ? '🌙 Gece Modu' : '☀️ Gündüz Modu';
+  localStorage.setItem('fpTheme', isDark ? 'dark' : 'light');
+  // sync topbar button too
+  const tb = document.getElementById('themeToggle');
+  if (tb) tb.textContent = isDark ? '🌙 Gece' : '☀️ Gündüz';
+}
+
+// ===================== SUGGESTIONS =====================
+function getSuggestions() {
+  try { return JSON.parse(localStorage.getItem('fpSuggestions') || '[]'); }
+  catch { return []; }
+}
+function saveSuggestionsLS(data) { localStorage.setItem('fpSuggestions', JSON.stringify(data)); }
+
+function openSuggestForm() {
+  const f = document.getElementById('suggestForm');
+  f.style.display = f.style.display === 'none' ? 'block' : 'none';
+}
+
+function saveSuggestion() {
+  const title = document.getElementById('suggestTitleInput').value.trim();
+  if (!title) { toast('Hata', 'Başlık zorunludur', 'danger'); return; }
+  const suggs = getSuggestions();
+  const now = new Date();
+  const ts = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')} ` +
+             `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
+  suggs.unshift({
+    id: Date.now(),
+    title,
+    desc: document.getElementById('suggestDesc').value.trim(),
+    cat: document.getElementById('suggestCat').value,
+    priority: document.getElementById('suggestPri').value,
+    status: 'open',
+    votes: 1,
+    voters: [currentUser?.username || 'anon'],
+    author: currentUser?.name || 'Anonim',
+    createdAt: ts,
+  });
+  saveSuggestionsLS(suggs);
+  document.getElementById('suggestTitleInput').value = '';
+  document.getElementById('suggestDesc').value = '';
+  document.getElementById('suggestForm').style.display = 'none';
+  renderSuggestions();
+  toast('Gönderildi', 'Öneriniz kaydedildi ✓', 'success');
+}
+
+function voteSuggestion(id) {
+  const suggs = getSuggestions();
+  const user = currentUser?.username || 'anon';
+  const idx = suggs.findIndex(s => s.id === id);
+  if (idx === -1) return;
+  const voters = suggs[idx].voters || [];
+  if (voters.includes(user)) {
+    suggs[idx].voters = voters.filter(v => v !== user);
+    suggs[idx].votes = Math.max(0, (suggs[idx].votes || 1) - 1);
+  } else {
+    suggs[idx].voters = [...voters, user];
+    suggs[idx].votes = (suggs[idx].votes || 0) + 1;
+  }
+  saveSuggestionsLS(suggs);
+  renderSuggestions();
+}
+
+function updateSuggestionStatus(id, status) {
+  const suggs = getSuggestions();
+  const idx = suggs.findIndex(s => s.id === id);
+  if (idx !== -1) { suggs[idx].status = status; saveSuggestionsLS(suggs); renderSuggestions(); }
+}
+
+function deleteSuggestion(id) {
+  if (!confirm('Öneriyi silmek istiyor musunuz?')) return;
+  saveSuggestionsLS(getSuggestions().filter(s => s.id !== id));
+  renderSuggestions();
+}
+
+function renderSuggestions() {
+  const el = document.getElementById('suggestionsContent');
+  if (!el) return;
+  let suggs = getSuggestions();
+  const catF = document.getElementById('suggestFilterCat')?.value || '';
+  const stF = document.getElementById('suggestFilterStatus')?.value || '';
+  const sortF = document.getElementById('suggestFilterSort')?.value || 'votes';
+  if (catF) suggs = suggs.filter(s => s.cat === catF);
+  if (stF) suggs = suggs.filter(s => s.status === stF);
+  if (sortF === 'votes') suggs.sort((a,b) => (b.votes||0) - (a.votes||0));
+  else if (sortF === 'newest') suggs.sort((a,b) => b.id - a.id);
+  else suggs.sort((a,b) => a.id - b.id);
+
+  const catIcon = { feature:'🆕', improvement:'⚡', bug:'🐛', ui:'🎨', other:'💬' };
+  const catLabel = { feature:'Yeni Özellik', improvement:'İyileştirme', bug:'Hata', ui:'Arayüz', other:'Diğer' };
+  const priColor = { low:'var(--text3)', medium:'var(--gold)', high:'var(--orange)', critical:'var(--red)' };
+  const priLabel = { low:'Düşük', medium:'Orta', high:'Yüksek', critical:'Kritik' };
+  const stClass = { open:'ss-open', planned:'ss-planned', done:'ss-done', rejected:'ss-rejected' };
+  const stLabel = { open:'Açık', planned:'Planlandı', done:'Tamamlandı', rejected:'Reddedildi' };
+  const user = currentUser?.username || 'anon';
+  const isAdmin = currentUser?.role === 'Süper Admin';
+
+  if (suggs.length === 0) {
+    el.innerHTML = `<div class="empty-state"><div class="empty-state-icon">💡</div><div class="empty-state-title">Henüz öneri yok</div><div class="empty-state-sub">İlk öneriyi siz ekleyin!</div></div>`;
+    return;
+  }
+
+  el.innerHTML = suggs.map(s => {
+    const voted = (s.voters || []).includes(user);
+    return `<div class="suggest-card">
+      <div style="display:flex;align-items:flex-start;gap:12px">
+        <!-- Vote -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:48px">
+          <button class="suggest-vote${voted?' voted':''}" onclick="voteSuggestion(${s.id})" title="${voted?'Oyu geri al':'Destekle'}">
+            ${voted?'▲':'△'} <span>${s.votes||0}</span>
+          </button>
+          <div style="font-size:9px;color:var(--text3)">oy</div>
+        </div>
+        <!-- Content -->
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:6px">
+            <div style="font-weight:700;font-size:14px;color:var(--text)">${s.title}</div>
+            <div style="display:flex;gap:5px;flex-shrink:0;align-items:center">
+              <span class="suggest-status ${stClass[s.status]||'ss-open'}">${stLabel[s.status]||s.status}</span>
+              ${isAdmin ? `<select style="font-size:10px;padding:2px 6px;border-radius:4px;background:var(--navy2);border:1px solid var(--border);color:var(--text3)" onchange="updateSuggestionStatus(${s.id},this.value)">
+                <option value="open"${s.status==='open'?' selected':''}>Açık</option>
+                <option value="planned"${s.status==='planned'?' selected':''}>Planlandı</option>
+                <option value="done"${s.status==='done'?' selected':''}>Tamamlandı</option>
+                <option value="rejected"${s.status==='rejected'?' selected':''}>Reddedildi</option>
+              </select>` : ''}
+              ${isAdmin||s.author===currentUser?.name?`<button onclick="deleteSuggestion(${s.id})" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:14px;padding:0 2px">×</button>`:''}
+            </div>
+          </div>
+          ${s.desc?`<div style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:8px">${s.desc}</div>`:''}
+          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+            <span style="font-size:11px;background:var(--navy2);border:1px solid var(--border);border-radius:4px;padding:2px 8px;color:var(--text2)">${catIcon[s.cat]||'💬'} ${catLabel[s.cat]||s.cat}</span>
+            <span style="font-size:11px;color:${priColor[s.priority]||'var(--text3)'}">● ${priLabel[s.priority]||s.priority}</span>
+            <span style="font-size:10px;color:var(--text3);margin-left:auto;font-family:'JetBrains Mono',monospace">${s.author||'—'} · ${s.createdAt||''}</span>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ===================== CHANGELOG =====================
+const CHANGELOG_DATA = [
+  {
+    version: 'v3.0',
+    timestamp: '2026-03-16 14:30:00',
+    items: [
+      'Login ekranı — TR/EN/FR dil desteği, gece/gündüz modu, canlı saat',
+      'Kullanıcı yönetimi — admin, operatör, görüntüleyici rolleri',
+      'Çoklu dil desteği (TR/EN/FR) — tüm arayüz metinleri',
+      'Kullanıcı menüsü — avatar, rol, çıkış butonu',
+      'Geliştirme Önerileri sayfası — oylama, kategori, durum takibi',
+      'Sürüm Notları sayfası — tam güncelleme geçmişi ve zaman damgaları',
+      'Versiyon badge ve build timestamp her sayfada görünür',
+    ]
+  },
+  {
+    version: 'v2.0',
+    timestamp: '2026-03-15 10:00:00',
+    items: [
+      'Aranabilir armatör combobox (19 armatör, alliance grupları)',
+      'Liman autocomplete (50+ liman, LOCODE + bayrak)',
+      'Veri geri yükleme (.db import) özelliği',
+      'RFQ — TR/EN/FR çok dil PDF desteği',
+      'Sabit şartlar yönetimi (RFQ PDF + alış fiyatı zorunlu onay)',
+      'Canlı konteyner takip paneli (armatör link entegrasyonu)',
+      'SEO meta etiketleri ve Open Graph desteği',
+      'Klavye kısayolları (1-6, N, Esc)',
+      'GitHub sidebar footer ve Hakkında sayfası',
+    ]
+  },
+  {
+    version: 'v1.0',
+    timestamp: '2026-03-11 09:00:00',
+    items: [
+      'İlk sürüm — Konteyner & Navlun Yönetim Sistemi',
+      'Dashboard, Konteynır Takip, Alarmlar modülleri',
+      'Navlun Borsası — SCFI/CCFI/WCI endeksleri, rota grafikleri',
+      'Alış Fiyatları — armatör, rota, konteyner tipi, geçerlilik',
+      'Fiyat Talebi (RFQ) formu',
+      'Müşteri Teklifi oluşturma ve PDF önizleme',
+      'Hile Uyarıları — 25+ madde, forwarder & armatör hileleri',
+      'Karar Destek Paneli — KPI ve optimizasyon önerileri',
+      'Müşteri Mesajları — İngilizce & Fransızca varış bildirimleri',
+      'Ayarlar — firma bilgileri, alarm eşikleri, zorunlu alanlar',
+      'Gece/Gündüz tema desteği',
+      'SQLite (sql.js) ile localStorage veritabanı',
+    ]
+  }
+];
+
+function renderChangelog() {
+  const el = document.getElementById('changelogContent');
+  if (!el) return;
+  // Update current version badge
+  const cvb = document.getElementById('currentVerBadge');
+  if (cvb) cvb.textContent = BUILD_VERSION;
+  el.innerHTML = CHANGELOG_DATA.map((cl, idx) => `
+    <div class="card" style="margin-bottom:16px">
+      <div class="changelog-item">
+        <div>
+          <div class="cl-ver">${cl.version}</div>
+          <div class="cl-ts">${cl.timestamp}</div>
+          ${idx === 0 ? `<span style="font-size:9px;background:rgba(0,212,255,.15);color:var(--accent);border:1px solid rgba(0,212,255,.3);border-radius:3px;padding:1px 6px;margin-top:4px;display:inline-block;font-family:'JetBrains Mono',monospace">GÜNCEL</span>` : ''}
+        </div>
+        <div style="flex:1">
+          <ul class="cl-items">
+            ${cl.items.map(i => `<li>${i}</li>`).join('')}
+          </ul>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+// Hook changelog and suggestions to showPage
+const _origShowPage = showPage;
+function showPage(id) {
+  _origShowPage(id);
+  if (id === 'suggestions') renderSuggestions();
+  if (id === 'changelog') renderChangelog();
+}
+
+// ===================== LOGIN SCREEN INIT =====================
+(function initLoginScreen() {
+  // Set build info on login screen
+  const verEl = document.getElementById('loginVer');
+  const tsEl = document.getElementById('loginBuildTs');
+  if (verEl) verEl.textContent = BUILD_VERSION;
+  if (tsEl) tsEl.textContent = '· ' + BUILD_TIMESTAMP;
+  // Update topbar badge too
+  const vb = document.getElementById('versionBadge');
+  if (vb) vb.textContent = BUILD_VERSION;
+  // Apply saved theme to login screen
+  const saved = localStorage.getItem('fpTheme');
+  if (saved === 'light') {
+    isDark = false;
+    document.body.classList.add('light-mode');
+    const lb = document.getElementById('loginThemeBtn');
+    if (lb) lb.textContent = '☀️ Gündüz Modu';
+  }
+  // Start login clock
+  startLoginClock();
+  // Focus username field
+  setTimeout(() => {
+    const u = document.getElementById('loginUser');
+    if (u) u.focus();
+  }, 300);
+  // Enter key support on login
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && document.getElementById('loginScreen')?.style.display !== 'none') {
+      if (document.activeElement?.id !== 'loginPass') return;
+      doLogin();
+    }
+  });
+})();
+
+
 function showShortcuts() {
   const existing = document.getElementById('shortcutsModal');
   if (existing) { existing.remove(); return; }
@@ -4193,29 +5225,9 @@ function showShortcuts() {
   document.body.appendChild(overlay);
 }
 
-init();
-loadTheme();
-
-// First launch welcome
-if (!localStorage.getItem('fpWelcomed')) {
-  setTimeout(() => {
-    localStorage.setItem('fpWelcomed','1');
-    const c = document.getElementById('toastContainer');
-    const t = document.createElement('div');
-    t.className = 'toast success';
-    t.style.cssText = 'min-width:340px;cursor:pointer';
-    t.innerHTML = `<div class="toast-title">⚓ FreightPro'ya Hoş Geldiniz!</div>
-      <div class="toast-msg">Kurulum gerektirmeyen, ücretsiz lojistik yönetim sistemi.<br>
-      <span style="color:var(--green);font-weight:600">Başlamak için</span>: Ayarlar → Firma bilgilerinizi girin.<br>
-      💡 <kbd style="background:#1e293b;border:1px solid #334155;border-radius:3px;padding:1px 5px;font-size:10px">💾 Yedekle</kbd> butonuyla verilerinizi periyodik kaydedin.</div>`;
-    t.onclick = () => t.remove();
-    c.appendChild(t);
-    setTimeout(() => t.remove(), 12000);
-  }, 1200);
-}
-
-// Keyboard shortcuts
+// Keyboard shortcuts (only active when logged in)
 document.addEventListener('keydown', e => {
+  if (!currentUser) return; // only when logged in
   if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
   if (e.key === '1') showPage('dashboard');
   if (e.key === '2') showPage('shipments');
@@ -4223,10 +5235,13 @@ document.addEventListener('keydown', e => {
   if (e.key === '4') showPage('pricelist');
   if (e.key === '5') showPage('rfq');
   if (e.key === '6') showPage('quotes');
+  if (e.key === '7') showPage('suggestions');
+  if (e.key === '8') showPage('changelog');
   if (e.key === 'n' && !e.ctrlKey && !e.metaKey) openModal('shipmentModal');
   if (e.key === 'Escape') {
     document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
     document.querySelectorAll('.cb-dropdown.open').forEach(d => d.classList.remove('open'));
+    closeUserMenu();
   }
 });</script>
 </body>
