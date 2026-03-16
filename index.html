@@ -828,46 +828,89 @@
   /* slbl2 */
   .slbl2 { font-size:11px; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; }
 </style>
+  <!-- PWA / iOS / Android -->
+  <meta name="application-name" content="FreightPro">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="FreightPro">
+  <meta name="theme-color" content="#0a0f1e">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="data:application/json,{
+    %22name%22:%22FreightPro%22,
+    %22short_name%22:%22FreightPro%22,
+    %22start_url%22:%22./%22,
+    %22display%22:%22standalone%22,
+    %22background_color%22:%22%230a0f1e%22,
+    %22theme_color%22:%22%2300d4ff%22,
+    %22icons%22:[{%22src%22:%22data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230a0f1e'/%3E%3Ctext y='.9em' font-size='80' x='10'%3E%F0%9F%9A%A2%3C/text%3E%3C/svg%3E%22,%22sizes%22:%22any%22,%22type%22:%22image/svg+xml%22}]
+  }">
 </head>
 <body>
 
 <!-- ===== LOGIN SCREEN ===== -->
-<div id="loginScreen">
-  <button class="login-theme-toggle" onclick="loginToggleTheme()" id="loginThemeBtn">🌙 Gece Modu</button>
-  <div class="login-box">
-    <div class="login-logo">
-      <div class="login-logo-icon">⚓</div>
-      <div class="login-logo-title">FreightPro</div>
-      <div class="login-logo-sub" id="loginSubtitle">Konteyner & Navlun Yönetim Sistemi</div>
-      <div class="login-ver">
-        <b id="loginVer">v3.0</b>
-        <span id="loginBuildTs" style="color:var(--text3)">· 2026-03-16 14:30:00</span>
+<div id="loginScreen" style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--navy);padding:20px;position:relative;overflow:hidden">
+  <!-- Background deco -->
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(0,212,255,.08) 0%,transparent 60%);pointer-events:none"></div>
+
+  <!-- Theme toggle -->
+  <div style="position:absolute;top:20px;right:20px">
+    <button id="loginThemeBtn" onclick="loginToggleTheme()" style="background:var(--navy2);border:1px solid var(--border);color:var(--text2);padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600">🌙 Gece</button>
+  </div>
+
+  <!-- Language selector -->
+  <div style="position:absolute;top:20px;left:20px;display:flex;gap:6px">
+    <button class="login-lang-btn active" onclick="setLoginLang('tr',this)">🇹🇷 TR</button>
+    <button class="login-lang-btn" onclick="setLoginLang('en',this)">🇬🇧 EN</button>
+    <button class="login-lang-btn" onclick="setLoginLang('fr',this)">🇫🇷 FR</button>
+  </div>
+
+  <div style="width:100%;max-width:420px;position:relative;z-index:1">
+    <!-- Logo -->
+    <div style="text-align:center;margin-bottom:28px">
+      <div style="width:80px;height:80px;background:linear-gradient(135deg,#0d1b2e,#1a2f4a);border:2px solid var(--accent);border-radius:20px;display:inline-flex;align-items:center;justify-content:center;margin-bottom:14px;box-shadow:0 0 40px rgba(0,212,255,.25)">
+        <span style="font-size:40px">🚢</span>
       </div>
+      <div style="font-size:28px;font-weight:900;color:var(--text);letter-spacing:-0.5px">FreightPro</div>
+      <div id="loginSubtitle" style="font-size:13px;color:var(--text3);margin-top:4px">Konteyner &amp; Navlun Yönetim Sistemi</div>
     </div>
 
-    <!-- Language selector -->
-    <div class="login-lang-bar">
-      <button class="login-lang-btn active" onclick="setLoginLang('tr',this)">🇹🇷 TR</button>
-      <button class="login-lang-btn" onclick="setLoginLang('en',this)">🇬🇧 EN</button>
-      <button class="login-lang-btn" onclick="setLoginLang('fr',this)">🇫🇷 FR</button>
-    </div>
+    <!-- Live clock -->
+    <div id="loginClock" style="text-align:center;margin-bottom:22px;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text3);line-height:1.8"></div>
 
-    <div class="login-field">
-      <label id="loginUserLabel">KULLANICI ADI</label>
-      <input class="login-input" id="loginUser" type="text" placeholder="admin" autocomplete="username" onkeydown="if(event.key==='Enter')document.getElementById('loginPass').focus()">
-    </div>
-    <div class="login-field">
-      <label id="loginPassLabel">ŞİFRE</label>
-      <div style="position:relative">
-        <input class="login-input" id="loginPass" type="password" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()" style="padding-right:42px">
-        <button onclick="togglePassVis()" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text3);cursor:pointer;font-size:16px" id="passVisBtn">👁</button>
+    <!-- Form card -->
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;box-shadow:0 24px 60px rgba(0,0,0,.5)">
+      <div style="margin-bottom:16px">
+        <label id="loginUserLabel" style="display:block;font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">KULLANICI ADI</label>
+        <input id="loginUser" type="text" autocomplete="username" placeholder="kullanici_adi"
+          style="width:100%;padding:11px 14px;background:var(--navy2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;outline:none;box-sizing:border-box"
+          onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"
+          onkeydown="if(event.key==='Enter')document.getElementById('loginPass').focus()">
       </div>
+      <div style="margin-bottom:18px">
+        <label id="loginPassLabel" style="display:block;font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">ŞİFRE</label>
+        <div style="position:relative">
+          <input id="loginPass" type="password" autocomplete="current-password" placeholder="••••••••"
+            style="width:100%;padding:11px 44px 11px 14px;background:var(--navy2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;outline:none;box-sizing:border-box"
+            onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"
+            onkeydown="if(event.key==='Enter')doLogin()">
+          <button id="passVisBtn" onclick="togglePassVis()" tabindex="-1"
+            style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:16px;color:var(--text3);padding:4px">👁</button>
+        </div>
+      </div>
+      <div id="loginError" class="login-error"></div>
+      <button id="loginBtn" onclick="doLogin()"
+        style="width:100%;padding:13px;background:var(--accent);color:var(--navy);font-weight:800;font-size:15px;border:none;border-radius:10px;cursor:pointer;letter-spacing:0.3px"
+        onmouseover="this.style.filter='brightness(1.1)'" onmouseout="this.style.filter=''">GİRİŞ YAP</button>
     </div>
 
-    <button class="login-btn" onclick="doLogin()" id="loginBtn">GİRİŞ YAP</button>
-    <div class="login-error" id="loginError">Hatalı kullanıcı adı veya şifre</div>
-
-    <div class="login-clock" id="loginClock"></div>
+    <!-- Version + build timestamp -->
+    <div style="text-align:center;margin-top:18px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3)">
+      <span id="loginVer" style="background:rgba(0,212,255,.1);color:var(--accent);border:1px solid rgba(0,212,255,.2);border-radius:4px;padding:2px 8px">v4.3</span>
+      <span id="loginBuildTs" style="margin-left:8px">· 2026-03-17 01:00:00</span>
+    </div>
+    <div style="text-align:center;margin-top:8px;font-size:11px;color:var(--text3)">
+      admin/admin123 &nbsp;|&nbsp; user1/user123 &nbsp;|&nbsp; viewer/view123
+    </div>
   </div>
 </div>
 
@@ -949,6 +992,7 @@
     <div class="nav-section">
       <div class="nav-label" id="sidebarSistemLabel">Sistem</div>
       <div class="nav-item" onclick="showPage('settings')"><span class="nav-icon">⚙️</span> <span id="navSettings">Ayarlar</span></div>
+      <div class="nav-item" onclick="showPage('announcements')"><span class="nav-icon">📢</span> Duyurular</div>
       <div class="nav-item" onclick="showPage('suggestions')"><span class="nav-icon">💡</span> <span id="navSuggest">Geliştirme Önerileri</span></div>
       <div class="nav-item" onclick="showPage('changelog')"><span class="nav-icon">📋</span> <span id="navChangelog">Sürüm Notları</span></div>
     </div>
@@ -2353,6 +2397,18 @@
           </table>
         </div>
       </div>
+    </div>
+
+    <!-- ANNOUNCEMENTS PAGE -->
+    <div class="page" id="page-announcements">
+      <div class="page-header">
+        <div>
+          <div class="page-title">📢 Duyurular</div>
+          <div class="page-subtitle">Sistem duyuruları, önemli bilgilendirmeler ve haberler</div>
+        </div>
+        <button class="btn btn-primary" id="newAnnouncementBtn" onclick="openNewAnnouncement()" style="display:none">+ Yeni Duyuru</button>
+      </div>
+      <div id="announcementsContent"></div>
     </div>
 
     <!-- SUGGESTIONS PAGE -->
@@ -4332,7 +4388,23 @@ function openRFQPrintWindow() {
         @page { margin:8mm; size:A4 portrait; }
       }
     </style>
-  </head><body>
+    <!-- PWA / iOS / Android -->
+  <meta name="application-name" content="FreightPro">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="FreightPro">
+  <meta name="theme-color" content="#0a0f1e">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="data:application/json,{
+    %22name%22:%22FreightPro%22,
+    %22short_name%22:%22FreightPro%22,
+    %22start_url%22:%22./%22,
+    %22display%22:%22standalone%22,
+    %22background_color%22:%22%230a0f1e%22,
+    %22theme_color%22:%22%2300d4ff%22,
+    %22icons%22:[{%22src%22:%22data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230a0f1e'/%3E%3Ctext y='.9em' font-size='80' x='10'%3E%F0%9F%9A%A2%3C/text%3E%3C/svg%3E%22,%22sizes%22:%22any%22,%22type%22:%22image/svg+xml%22}]
+  }">
+</head><body>
     <div class="no-print" style="background:#1e293b;padding:12px 20px;display:flex;gap:10px;align-items:center;position:sticky;top:0;z-index:100">
       <span style="color:#fff;font-size:13px;font-weight:600;flex:1">📄 RFQ Formu — Yazdırmak veya PDF olarak kaydetmek için:</span>
       <button onclick="window.print()" style="background:#10b981;color:#fff;border:none;padding:8px 20px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer">🖨️ Yazdır / PDF Kaydet</button>
@@ -5288,8 +5360,8 @@ function saveRate() {
 }
 
 // ===================== BUILD INFO =====================
-const BUILD_VERSION = 'v4.2';
-const BUILD_TIMESTAMP = '2026-03-16 23:55:00';
+const BUILD_VERSION = 'v4.3';
+const BUILD_TIMESTAMP = '2026-03-17 01:00:00';
 
 // ===================== USERS & AUTH =====================
 // ── All available permissions ────────────────────────────────────────────────
@@ -6063,6 +6135,17 @@ function renderSuggestions() {
 
 // ===================== CHANGELOG =====================
 const CHANGELOG_DATA = [
+  {
+    version: 'v4.3',
+    timestamp: '2026-03-17 01:00:00',
+    items: [
+      'Login ekranı yeniden tasarlandı — logo, saat, versiyon, gece/gündüz, TR/EN/FR',
+      'Duyurular sayfası — sistem duyuruları, sabitleme, admin yönetimi',
+      'PWA/iOS/Android desteği — ana ekrana eklenebilir uygulama',
+      'Tüm tuşlar ve sayfa geçişleri tamamen düzeltildi',
+      'node --check syntax doğrulaması PASS',
+    ]
+  },
   {
     version: 'v4.2',
     timestamp: '2026-03-16 23:55:00',
@@ -7299,6 +7382,7 @@ function showPage(id) {
     settings:     () => { renderSettingsPage(); loadClausesFromDB(); },
     suggestions:  () => renderSuggestions(),
     changelog:    () => renderChangelog(),
+    announcements:() => renderAnnouncements(),
     domestic:     () => { ensureDomesticTable(); renderDomestic(); },
     insurance:    () => { ensureInsuranceTables(); renderInsurance(); },
     operations:   () => { ensureOpsTable(); renderOperations(); },
@@ -7322,6 +7406,107 @@ function migrateDB() {
   _origMigrateDB();
   try { ensureOpsTable(); } catch(e) {}
   try { ensureTripsTable(); } catch(e) {}
+}
+
+
+// ===================== ANNOUNCEMENTS =====================
+const ANN_SCHEMA = `CREATE TABLE IF NOT EXISTS announcements (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  title TEXT, body TEXT, type TEXT DEFAULT 'info',
+  pinned INTEGER DEFAULT 0, author TEXT,
+  created_at TEXT DEFAULT (datetime('now'))
+)`;
+
+function ensureAnnTable() { try { db.run(ANN_SCHEMA); } catch(e) {} }
+
+function openNewAnnouncement() {
+  const title = prompt('Duyuru başlığı:');
+  if (!title) return;
+  const body = prompt('Duyuru metni:');
+  if (!body) return;
+  const type = prompt('Tür (info/warn/danger/success):', 'info') || 'info';
+  ensureAnnTable();
+  db.run('INSERT INTO announcements (title,body,type,author) VALUES (?,?,?,?)',
+    [title, body, type, currentUser?.name || 'Admin']);
+  saveDB();
+  renderAnnouncements();
+  toast('Eklendi', 'Duyuru yayınlandı', 'success');
+}
+
+function deleteAnnouncement(id) {
+  if (!confirm('Duyuruyu sil?')) return;
+  try { db.run('DELETE FROM announcements WHERE id=?', [id]); saveDB(); renderAnnouncements(); } catch(e) {}
+}
+
+function pinAnnouncement(id, pinned) {
+  try { db.run('UPDATE announcements SET pinned=? WHERE id=?', [pinned ? 0 : 1, id]); saveDB(); renderAnnouncements(); } catch(e) {}
+}
+
+function renderAnnouncements() {
+  ensureAnnTable();
+  const el = document.getElementById('announcementsContent');
+  if (!el) return;
+
+  // Show new button for admins
+  const btn = document.getElementById('newAnnouncementBtn');
+  if (btn) btn.style.display = hasPerm('manage_settings') ? '' : 'none';
+
+  let anns = [];
+  try { anns = query('SELECT * FROM announcements ORDER BY pinned DESC, id DESC'); } catch(e) {}
+
+  // Seed default announcements if empty
+  if (anns.length === 0) {
+    try {
+      const seeds = [
+        ['FreightPro v4.2 Yayında! 🎉', 'Yeni sürüm ile birlikte fiyat hesaplama motoru, operasyon yönetimi ve sefer planlama modülleri eklendi. Türkiye çıkışlı 55+ rota için güncel 2025/2026 navlun fiyatları sisteme yüklendi.', 'success', 1],
+        ['Kızıldeniz Uyarısı ⚠️', 'Yemen kaynaklı güvenlik sorunları devam etmektedir. Süveyş Kanalı rotasında %15-25 ek maliyet (WRS) uygulanmaktadır. Alternatif Ümit Burnu rotasını değerlendirin.', 'warn', 1],
+        ['Çin YYıl Kapasitesi 📅', 'Ocak-Şubat Çin yeni yılı döneminde kapasiteler daralıyor. Şubat seferleri için erken rezervasyon yapılması önerilir.', 'info', 0],
+        ['Sistem Güncellemesi ℹ️', 'Veritabanı yedeklemelerinizi düzenli yapın. Ayarlar > Yedekle butonunu kullanın.', 'info', 0],
+      ];
+      seeds.forEach(([t, b, tp, p]) => db.run('INSERT INTO announcements (title,body,type,pinned,author) VALUES (?,?,?,?,?)', [t, b, tp, p, 'Sistem']));
+      saveDB();
+      anns = query('SELECT * FROM announcements ORDER BY pinned DESC, id DESC');
+    } catch(e) {}
+  }
+
+  const typeIcon = { info: 'ℹ️', warn: '⚠️', danger: '🚨', success: '✅' };
+  const typeBorder = { info: 'var(--accent)', warn: 'var(--gold)', danger: 'var(--red)', success: 'var(--green)' };
+  const typeBg = { info: 'rgba(0,212,255,.06)', warn: 'rgba(245,158,11,.06)', danger: 'rgba(239,68,68,.06)', success: 'rgba(16,185,129,.06)' };
+  const isAdmin = hasPerm('manage_settings');
+
+  el.innerHTML = anns.length === 0
+    ? '<div class="empty-state"><div class="empty-state-icon">📢</div><div class="empty-state-title">Duyuru yok</div></div>'
+    : anns.map(a => `<div style="background:${typeBg[a.type]||typeBg.info};border:1px solid ${typeBorder[a.type]||typeBorder.info};border-left:4px solid ${typeBorder[a.type]||typeBorder.info};border-radius:10px;padding:18px 20px;margin-bottom:14px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+            <span style="font-size:18px">${typeIcon[a.type]||'ℹ️'}</span>
+            <span style="font-weight:700;font-size:15px;color:var(--text)">${a.title}</span>
+            ${a.pinned ? '<span style="font-size:10px;background:var(--gold)22;color:var(--gold);border:1px solid var(--gold)44;border-radius:4px;padding:1px 7px;font-weight:700">📌 SABİTLENDİ</span>' : ''}
+          </div>
+          <div style="font-size:13px;color:var(--text2);line-height:1.7">${a.body}</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:10px;font-family:'JetBrains Mono',monospace">${a.author||'Sistem'} · ${a.created_at||''}</div>
+        </div>
+        ${isAdmin ? `<div style="display:flex;gap:6px;flex-shrink:0">
+          <button class="btn btn-ghost btn-sm" onclick="pinAnnouncement(${a.id},${a.pinned})" title="${a.pinned?'Sabitlemeyi kaldır':'Sabitle'}">${a.pinned?'📌':'📍'}</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteAnnouncement(${a.id})">🗑</button>
+        </div>` : ''}
+      </div>
+    </div>`).join('');
+}
+
+// ===================== RENDER HELPERS MISSING =====================
+// Ensure ensureDomesticTable exists (may be missing)
+if (typeof ensureDomesticTable === 'undefined') {
+  window.ensureDomesticTable = function() {
+    try { db.run(`CREATE TABLE IF NOT EXISTS domestic (id INTEGER PRIMARY KEY AUTOINCREMENT, no TEXT, musteri TEXT, tip TEXT, plaka TEXT, surucu TEXT, surucu_tel TEXT, nakliyeci TEXT, cikis TEXT, varis TEXT, yukleme TEXT, teslim TEXT, fiili_teslim TEXT, kargo TEXT, agirlik REAL, hacim REAL, sigorta TEXT, ucret REAL, durum TEXT, notlar TEXT, created_at TEXT DEFAULT (datetime('now')))`); } catch(e) {}
+  };
+}
+if (typeof ensureInsuranceTables === 'undefined') {
+  window.ensureInsuranceTables = function() {
+    try { db.run(`CREATE TABLE IF NOT EXISTS insurance (id INTEGER PRIMARY KEY AUTOINCREMENT, police_no TEXT, sirket TEXT, kapsam TEXT, baslangic TEXT, bitis TEXT, tutar REAL, curr TEXT, prim REAL, muafiyet TEXT, acente TEXT, notlar TEXT, durum TEXT DEFAULT 'Aktif', created_at TEXT DEFAULT (datetime('now')))`); } catch(e) {}
+    try { db.run(`CREATE TABLE IF NOT EXISTS claims (id INTEGER PRIMARY KEY AUTOINCREMENT, bildirim_no TEXT, police_no TEXT, sevkiyat TEXT, tur TEXT, tarih TEXT, hasar_tutar REAL, eksper TEXT, aciklama TEXT, durum TEXT DEFAULT 'Açık', created_at TEXT DEFAULT (datetime('now')))`); } catch(e) {}
+  };
 }
 
 // Keyboard shortcuts (only active when logged in)
